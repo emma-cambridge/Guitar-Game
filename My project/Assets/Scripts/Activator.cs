@@ -3,34 +3,43 @@ using System.Collections;
 
 public class Activator : MonoBehaviour
 {
-    
-    public KeyCode key;
-    bool active =false;
-    GameObject note;
+    private KeyCode key = KeyCode.F;
+    private bool isInTriggerZone = false;
+    private GameObject currentNoteObject = null;
 
     void Start()
     {
-        
+        // You can set the key here if you want: key = KeyCode.F;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(key)&&active)
+        if (Input.GetKeyDown(key) && isInTriggerZone && currentNoteObject != null)
         {
-            Destroy(note);
+            Destroy(currentNoteObject);
+            
+            currentNoteObject = null; 
         }
     }
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        active=true;
-        if(col.gameObject.tag=="Note")
-            note=col.gameObject;
+        if (col.gameObject.CompareTag("Note"))
+        {
+            isInTriggerZone = true;
+            currentNoteObject = col.gameObject;
+            Debug.Log("Entered zone with Note: " + currentNoteObject.name);
+        }
     }
 
     void OnTriggerExit2D(Collider2D col)
     {
-        active=false;
+
+        if (col.gameObject == currentNoteObject)
+        {
+            isInTriggerZone = false;
+            currentNoteObject = null;
+            Debug.Log("Exited zone.");
+        }
     }
 }
