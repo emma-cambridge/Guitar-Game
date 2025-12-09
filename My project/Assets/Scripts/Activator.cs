@@ -3,22 +3,32 @@ using System.Collections;
 
 public class Activator : MonoBehaviour
 {
-    private KeyCode key = KeyCode.F;
+    public KeyCode key;
     private bool isInTriggerZone = false;
     private GameObject currentNoteObject = null;
+    SpriteRenderer sr;
+    Color old;
+
+    void Awake()
+    {
+        sr = GetComponent<SpriteRenderer>();
+    }
 
     void Start()
     {
-        // You can set the key here if you want: key = KeyCode.F;
+        old = sr.color;
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(key) && isInTriggerZone && currentNoteObject != null)
+        if (Input.GetKeyDown(key))
+        {
+            StartCoroutine(Pressed());
+        }
+
+        if (Input.GetKeyDown(key) && isInTriggerZone)
         {
             Destroy(currentNoteObject);
-            
-            currentNoteObject = null; 
         }
     }
 
@@ -41,5 +51,12 @@ public class Activator : MonoBehaviour
             currentNoteObject = null;
             Debug.Log("Exited zone.");
         }
+    }
+
+    IEnumerator Pressed()
+    {
+        sr.color = new Color(0,0,0);
+        yield return new WaitForSeconds(0.2f);
+        sr.color=old;
     }
 }
