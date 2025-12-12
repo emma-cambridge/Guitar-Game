@@ -17,6 +17,8 @@ public class Activator : MonoBehaviour
     void Start()
     {
         old = sr.color;
+
+        PlayerPrefs.SetInt("Score", 0);
     }
 
     void Update()
@@ -29,6 +31,7 @@ public class Activator : MonoBehaviour
         if (Input.GetKeyDown(key) && isInTriggerZone)
         {
             Destroy(currentNoteObject);
+            AddScore();
         }
     }
 
@@ -51,6 +54,11 @@ public class Activator : MonoBehaviour
             currentNoteObject = null;
             Debug.Log("Exited zone.");
         }
+    }
+
+    void AddScore()
+    {
+        PlayerPrefs.SetInt("Score",PlayerPrefs.GetInt("Score")+1);
     }
 
     IEnumerator Pressed()
