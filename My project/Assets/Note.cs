@@ -4,6 +4,7 @@ public class Note : MonoBehaviour
 {
     Rigidbody2D rb;
     public float speed;
+    private GameObject currentNoteObject = null;
 
     void Awake ()
     {
@@ -18,6 +19,6 @@ public class Note : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }
